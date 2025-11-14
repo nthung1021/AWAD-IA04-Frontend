@@ -35,7 +35,7 @@ export default function RegisterPage() {
       reset();
     },
     onError: (err: any) => {
-      setSuccessMsg(null); // hide success if an error occurs
+      setSuccessMsg(null);
       if (err?.field && err?.message) {
         setError(err.field as keyof RegisterForm, { type: 'server', message: err.message });
       } else {
@@ -47,72 +47,65 @@ export default function RegisterPage() {
   return (
     <main>
       <Navbar />
-      <section className="container mx-auto px-4 py-12 max-w-lg">
-        <h1 className="text-3xl font-semibold mb-6">Create your account</h1>
+      <section className="site-container py-12 max-w-lg">
+        <h1 className="form-title">Create your account</h1>
 
         <form
           onSubmit={handleSubmit(values => mutate(values))}
-          className="space-y-4 bg-white p-6 rounded-2xl shadow"
+          className="form-card"
         >
           <div>
-            <label className="block text-sm font-medium mb-1">Name</label>
+            <label className="input-label">Name</label>
             <input
               type="text"
-              className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-600"
+              className="input-field"
               placeholder="Your Name"
               {...register('name')}
             />
-            {errors.name && (
-              <p className="text-sm text-red-600 mt-1 font-bold">{errors.name.message}</p>
-            )}
+            {errors.name && <p className="field-error">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="input-label">Email</label>
             <input
               type="email"
-              className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-600"
+              className="input-field"
               placeholder="you@example.com"
               {...register('email')}
             />
-            {errors.email && (
-              <p className="text-sm text-red-600 mt-1 font-bold">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="field-error">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="input-label">Password</label>
             <input
               type="password"
-              className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-600"
+              className="input-field"
               placeholder="At least 8 characters"
               {...register('password')}
             />
-            {errors.password && (
-              <p className="text-sm text-red-600 mt-1 font-bold">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="field-error">{errors.password.message}</p>}
           </div>
 
           <button
             type="submit"
             disabled={isPending}
-            className="w-full inline-flex items-center justify-center rounded-full bg-teal-900 text-white py-2.5 hover:bg-black transition disabled:opacity-60"
+            className="btn-primary"
           >
             {isPending ? 'Creating account…' : 'Sign up'}
           </button>
 
+          {/* Mutually exclusive alerts */}
           {successMsg && !generalError && (
-            <p className="text-sm text-green-700 font-bold">{successMsg}</p>
+            <p className="alert-success">{successMsg}</p>
           )}
           {generalError && !successMsg && (
-            <p className="text-sm text-red-600 font-bold">Error: {generalError}</p>
+            <p className="alert-error">Error: {generalError}</p>
           )}
 
           <p className="text-sm">
             Already have an account?{' '}
-            <Link href="/login" className="underline text-teal-800">
-              Login
-            </Link>
+            <Link href="/login" className="auth-link">Login</Link>
           </p>
         </form>
       </section>

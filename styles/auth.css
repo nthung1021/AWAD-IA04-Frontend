@@ -1,0 +1,5 @@
+@layer components {
+  .auth-link {
+    @apply underline text-teal-800;
+  }
+}

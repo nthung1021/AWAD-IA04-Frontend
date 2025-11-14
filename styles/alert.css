@@ -1,0 +1,9 @@
+@layer components {
+  .alert-success {
+    @apply text-sm text-green-700 font-bold;
+  }
+
+  .alert-error {
+    @apply text-sm text-red-600 font-bold;
+  }
+}

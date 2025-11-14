@@ -1,0 +1,21 @@
+@layer components {
+  .home-section {
+    @apply relative bg-teal-900 text-white py-24 lg:py-40;
+  }
+
+  .home-container {
+    @apply container mx-auto px-4 text-center max-w-2xl;
+  }
+
+  .home-title {
+    @apply text-5xl md:text-7xl font-bold tracking-tight mb-6;
+  }
+
+  .home-lead {
+    @apply text-lg opacity-80 mb-10;
+  }
+
+  .cta-primary {
+    @apply inline-flex py-3 px-6 rounded-full bg-lime-500 text-teal-900 border border-lime-500 hover:bg-white transition;
+  }
+}

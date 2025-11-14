@@ -14,7 +14,7 @@ export default function LoginPage() {
   const [msg, setMsg] = useState<string | null>(null);
 
   const onSubmit = (data: LoginForm) => {
-    setMsg('Mock login success - redirecting…');
+    setMsg('Mock login success — redirecting…');
 
     setTimeout(() => {
       router.push('/');
@@ -24,46 +24,46 @@ export default function LoginPage() {
   return (
     <main>
       <Navbar />
-      <section className="container mx-auto px-4 py-12 max-w-lg">
-        <h1 className="text-3xl font-semibold mb-6">Welcome back</h1>
+      <section className="site-container">
+        <h1 className="form-title">Welcome back</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-4 bg-white p-6 rounded-2xl shadow"
+          className="form-card"
         >
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="input-label">Email</label>
             <input
               type="email"
-              className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-600"
+              className="input-field"
               placeholder="you@example.com"
               {...register('email', { required: 'Email is required' })}
             />
-            {errors.email && <p className="text-sm text-red-600 mt-1 font-bold">{errors.email.message}</p>}
+            {errors.email && <p className="field-error">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="input-label">Password</label>
             <input
               type="password"
-              className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-600"
+              className="input-field"
               placeholder="Your password"
               {...register('password', { required: 'Password is required' })}
             />
-            {errors.password && <p className="text-sm text-red-600 mt-1 font-bold">{errors.password.message}</p>}
+            {errors.password && <p className="field-error">{errors.password.message}</p>}
           </div>
 
           <button
             type="submit"
             disabled={!!msg}
-            className="w-full inline-flex items-center justify-center rounded-full bg-teal-900 text-white py-2.5 hover:bg-black transition disabled:opacity-60"
+            className="btn-primary"
           >
-            Login
+            {msg ? 'Redirecting…' : 'Login'}
           </button>
 
-          {msg && <p className="text-sm text-green-700 mt-2 font-bold">{msg}</p>}
+          {msg && <p className="alert-success mt-2">{msg}</p>}
 
           <p className="text-sm">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/register" className="underline text-teal-800">Create one</Link>
           </p>
         </form>
@@ -71,4 +71,3 @@ export default function LoginPage() {
     </main>
   );
 }
-
