@@ -9,23 +9,23 @@ export default function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="py-6 border-b">
-      <div className="container mx-auto px-4">
-        <div className="relative flex items-center justify-between">
-          <Link href="/" className="inline-block font-semibold text-teal-900">
+    <nav className="navbar">
+      <div className="navbar-desktop">
+        <div className="navbar-desktop-content">
+          <Link href="/" className="navbar-desktop-brand">
             Brand
           </Link>
 
           {/* Center menu */}
-          <ul className="hidden md:flex gap-6 absolute left-1/2 -translate-x-1/2">
-            <li><a className="text-teal-900 hover:text-teal-700" href="#">About</a></li>
-            <li><a className="text-teal-900 hover:text-teal-700" href="#">Pricing</a></li>
-            <li><a className="text-teal-900 hover:text-teal-700" href="#">Contact</a></li>
-            <li><a className="text-teal-900 hover:text-teal-700" href="#">Blog</a></li>
+          <ul className="navbar-desktop-links">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Blog</a></li>
           </ul>
 
           {/* RIGHT SIDE — Conditional rendering */}
-          <div className="hidden md:flex gap-3">
+          <div className="navbar-desktop-actions">
             {!user ? (
               <>
                 <Link href="/login" className="btn-secondary">
@@ -37,7 +37,7 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <span className="font-semibold text-teal-900">
+                <span>
                   Hello, {user.name}
                 </span>
                 <button
@@ -62,8 +62,16 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
       {open && (
-        <div className="md:hidden px-4 pt-4 pb-2">
-          <div className="flex flex-col gap-3">
+        <div className="navbar-mobile">
+          <div className="navbar-mobile-menu">            
+
+            <ul className="navbar-mobile-links">
+              <li><a href="#">About</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+
             {!user ? (
               <>
                 <Link href="/login" className="btn-secondary">
@@ -75,7 +83,7 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <span className="font-semibold text-teal-900">
+                <span className="navbar-mobile-username">
                   Hello, {user.name}
                 </span>
                 <button

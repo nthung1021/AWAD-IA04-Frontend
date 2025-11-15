@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLogin } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 
@@ -11,6 +12,7 @@ type LoginForm = { email: string; password: string };
 export default function LoginPage() {
   const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
+  const { user, login } = useAuth();
   const loginMu = useLogin();
 
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -20,9 +22,12 @@ export default function LoginPage() {
     setGeneralError(null);
     setSuccessMsg(null);
     try {
-      await loginMu.mutateAsync(data);
+      const res = await loginMu.mutateAsync(data);
       setSuccessMsg('Login successful — redirecting…');
-      setTimeout(() => {router.push('/');}, 1000);
+      setTimeout(() => {
+        login(res.user);
+        router.push('/');
+      }, 1000);
     } catch (err: any) {
       setGeneralError(err?.response?.data?.message ?? 'Login failed');
     }
