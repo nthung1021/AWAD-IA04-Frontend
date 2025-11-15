@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLogin } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
@@ -12,13 +13,18 @@ export default function LoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
   const loginMu = useLogin();
 
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [generalError, setGeneralError] = useState<string | null>(null);
+
   async function onSubmit(data: LoginForm) {
+    setGeneralError(null);
+    setSuccessMsg(null);
     try {
       await loginMu.mutateAsync(data);
-      router.push('');
+      setSuccessMsg('Login successful — redirecting…');
+      setTimeout(() => {router.push('/');}, 1000);
     } catch (err: any) {
-      // show error message
-      alert(err?.response?.data?.message ?? 'Login failed');
+      setGeneralError(err?.response?.data?.message ?? 'Login failed');
     }
   }
 
@@ -60,6 +66,13 @@ export default function LoginPage() {
           >
             {loginMu.isPending ? 'Signing in…' : 'Login'}
           </button>
+
+          {successMsg && !generalError && (
+            <p className="alert-success">{successMsg}</p>
+          )}
+          {generalError && !successMsg && (
+            <p className="alert-error">Error: {generalError}</p>
+          )}
           
           <p className="text-sm">
             Don&apos;t have an account?{' '}

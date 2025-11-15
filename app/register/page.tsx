@@ -2,47 +2,34 @@
 
 import Navbar from '@/components/Navbar';
 import { useForm } from 'react-hook-form';
+import { useRegister } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterForm } from '@/lib/validators';
-import { useMutation } from '@tanstack/react-query';
-import { registerUser } from '@/lib/api';
 import { useState } from 'react';
 import Link from 'next/link';
 
 export default function RegisterPage() {
+  const router = useRouter();
+  const { register, handleSubmit, formState: { errors } } = useForm<RegisterForm>({
+    resolver: zodResolver(registerSchema),
+  });
+  const registerMu = useRegister();
+
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    clearErrors,
-    setError,
-  } = useForm<RegisterForm>({ resolver: zodResolver(registerSchema) });
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: registerUser,
-    onMutate: () => {
-      setSuccessMsg(null);
-      setGeneralError(null);
-      clearErrors();
-    },
-    onSuccess: (data) => {
-      setSuccessMsg(data.message || 'Registered successfully!');
-      clearErrors();
-      reset();
-    },
-    onError: (err: any) => {
-      setSuccessMsg(null);
-      if (err?.field && err?.message) {
-        setError(err.field as keyof RegisterForm, { type: 'server', message: err.message });
-      } else {
-        setGeneralError(err?.message || 'Registration failed');
-      }
-    },
-  });
+  async function mutate(data: RegisterForm) {
+    setGeneralError(null);
+    setSuccessMsg(null);
+    try {
+      const res = await registerMu.mutateAsync(data);
+      setSuccessMsg(res.message || 'Registered successfully! Please login to continue.');
+      setTimeout(() => {router.push('/login');}, 1000);
+    } catch (err: any) {
+      setGeneralError(err?.response?.data?.message ?? 'Registration failed');
+    }
+  }
 
   return (
     <main>
@@ -89,10 +76,10 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            disabled={isPending}
+            disabled={registerMu.isPending}
             className="btn-primary"
           >
-            {isPending ? 'Creating account…' : 'Sign up'}
+            {registerMu.isPending ? 'Creating account…' : 'Sign up'}
           </button>
 
           {/* Mutually exclusive alerts */}

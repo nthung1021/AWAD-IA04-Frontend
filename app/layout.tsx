@@ -1,5 +1,6 @@
 import './globals.css';
 import { AuthProvider } from "../context/AuthContext";
+import QueryProvider from "../providers/QueryProvider";
 
 export const metadata = {
   title: 'IA03 Demo',
@@ -10,9 +11,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="antialiased bg-body text-body font-sans">    
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

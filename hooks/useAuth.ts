@@ -2,6 +2,24 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/axios';
 import { setAccessToken, setRefreshTokenLocal, clearTokens, getRefreshToken } from '@/lib/auth';
 
+export function useRegister() {
+  const qc = useQueryClient();
+  return useMutation<
+    { message: string },
+    { field?: string; message: string },
+    { name: string; email: string; password: string }
+  >({
+    mutationFn: async (payload: { name: string; email: string; password: string }) => {
+      const res = await api.post('/users/register', payload);
+      return res.data; // { message }
+    }
+    ,
+    onSuccess: (data) => {
+      qc.invalidateQueries({ queryKey: ['currentUser'] }); // refetch protected user endpoint
+    },
+  });
+}
+
 export function useLogin() {
   const qc = useQueryClient();
   return useMutation<
