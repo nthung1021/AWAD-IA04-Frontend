@@ -8,6 +8,6 @@
   }
 
   .btn-secondary {
-    @apply inline-flex py-2.5 px-4 text-sm border border-teal-900 rounded-full hover:bg-teal-900 hover:text-white transition;
+    @apply inline-flex items-center justify-center text-sm border border-teal-900 rounded-full hover:bg-teal-900 px-4 py-2.5 hover:text-white transition;
   }
 }
