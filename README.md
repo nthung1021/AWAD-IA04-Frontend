@@ -6,6 +6,12 @@ This is the individual assignment (number 3) in the subject Advanced Web Applica
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Online host
+
+This project is hosted using Vercel, here is the link to the project:
+
+https://awad-ia-04-frontend.vercel.app/
+
 ## Getting Started
 
 First, run the development server:
