@@ -3,7 +3,7 @@ import { AuthProvider } from "../context/AuthContext";
 import QueryProvider from "../providers/QueryProvider";
 
 export const metadata = {
-  title: 'IA03 Demo',
+  title: 'IA04 Demo',
   description: 'Home, Register, Login (Next.js + Tailwind)',
 };
 
