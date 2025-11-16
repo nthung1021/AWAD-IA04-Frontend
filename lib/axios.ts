@@ -22,6 +22,7 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
+// Request interceptor to add access token
 api.interceptors.request.use((config) => {
   const access = getAccessToken();
   if (access && config.headers) {

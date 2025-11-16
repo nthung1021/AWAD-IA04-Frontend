@@ -1,24 +1,27 @@
 'use client';
-import { useState } from 'react';
+
+import Navbar from '@/components/Navbar';
 import { useForm } from 'react-hook-form';
 import { useLogin } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema, type LoginForm } from '@/lib/validators';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import Navbar from '@/components/Navbar';
 import Link from 'next/link';
-
-type LoginForm = { email: string; password: string };
 
 export default function LoginPage() {
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
+  });
   const { user, login } = useAuth();
   const loginMu = useLogin();
 
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
-  async function onSubmit(data: LoginForm) {
+  async function mutate(data: LoginForm) {
     setGeneralError(null);
     setSuccessMsg(null);
     try {
@@ -39,7 +42,7 @@ export default function LoginPage() {
       <section className="site-container py-12 max-w-lg">
         <h1 className="form-title">Welcome back</h1>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(values => mutate(values))}
           className="form-card"
         >
           <div>
@@ -48,7 +51,7 @@ export default function LoginPage() {
               type="email"
               className="input-field"
               placeholder="you@example.com"
-              {...register('email', { required: 'Email is required' })}
+              {...register('email')}
             />
             {errors.email && <p className="field-error">{errors.email.message}</p>}
           </div>
@@ -59,7 +62,7 @@ export default function LoginPage() {
               type="password"
               className="input-field"
               placeholder="Your password"
-              {...register('password', { required: 'Password is required' })}
+              {...register('password')}
             />
             {errors.password && <p className="field-error">{errors.password.message}</p>}
           </div>
